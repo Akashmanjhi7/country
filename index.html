@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "averta cy w10";
+        }
+        body{
+            background-color:#000000;
+
+        }
+     
+        .inputfield{
+            margin-top: 2vw;
+        }
+        .inputfield input{
+            width: 200px;
+            height: 2vw;
+            background-color: rgb(249, 234, 234);
+            padding: 2vw;
+        }
+     p{
+            color:#fff;
+        }
+        #main{
+            background-color: rgb(4, 4, 4);
+            height: calc(2vw-80vh);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #card{
+           border-radius: 20px;
+           background-color: #63bedf;
+            border: 2px solid white;
+            height: 70%;
+            width: 55vw;
+            
+        }
+        .image{
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image img{
+            /* border:1px solid black; */
+           margin: 0px 1px;
+           height : 15vw;
+               
+        }
+        .countryname{
+            margin-top: -1vw;
+            display: flex;
+            justify-content: center;
+            /* align-items: start; */
+             /* background: #000;    */
+        }
+        .countryname h1{
+            padding-top: 1vw;
+                font-size: 2vw;
+        }
+        .capital{
+            font-weight: 500;
+            
+            opacity: 0.9;
+        }
+        #btmcard{
+            display: flex;
+            justify-content: space-between;
+            padding: 5vw 10vw;
+            margin-bottom: 10px;
+            font-size: 1.4vw;
+        }
+       
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body> 
+    <div class="container">
+        <center><div class="inputfield">
+        <input type="text" placeholder="Enter Country Name" onblur="getVal()">
+        </div>
+    <br> <p>After The Type Country Name Click the center of the screen and First Letter always be a capital</p>
+</center>
+
+
+        <div id="main">
+       
+        <div id="card"> 
+            
+              </div>
+            
+        </div>
+         
+   
+</div>
+
+
+ 
+   
+    
+      <script>
+        const card = document.querySelector("#card");
+        let request;
+    
+        function fetchData(countryName) {
+          request = new XMLHttpRequest();
+          request.open("GET", `https://restcountries.com/v3.1/name/${countryName}`);
+          request.send();
+    
+          request.addEventListener("load", function () {
+            const [data] = JSON.parse(this.responseText);
+    
+            let htmlData = `
+              <div class="image">
+                <img src="${data.flags.png}" alt="" srcset="">
+              </div>   
+              <div class="countryname">
+                <h1>${data.name.common}</h1>                    
+              </div>
+              <div class="capital">
+                <center><h4>Capital: ${data.capital}</h4></center>
+              </div>
+              <div id="btmcard">
+                <div class="population">Population <br> ${data.population}</div>
+                <div class="nativelanguage">Language <br>${Object.keys(data.languages)}</div>
+                <div class="currency">Currency <br>${Object.keys(data.currencies)}</div>
+              </div> 
+            `;
+    
+            card.innerHTML = htmlData;
+          });
+        }
+    
+        function getVal() {
+          const vals = document.querySelector('input').value;
+          console.log(vals);
+          fetchData(vals);
+        }
+      </script>
+     
+     
+    </body>
+    </html>
+    
